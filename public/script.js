@@ -8,6 +8,34 @@
     if (!nav || !button || !links) return;
 
     const mobile = window.matchMedia('(max-width: 860px)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const menuLinks = Array.from(links.querySelectorAll('a[href^="#"]'));
+    const sections = Array.from(document.querySelectorAll('main > section[id]'));
+    const sectionLinks = {
+      'hive-experience': '#nahdi-role', services: '#nahdi-role',
+      'clients-managed': '#platforms', 'paid-ads-cases': '#selected-work',
+      process: '#selected-work',
+    };
+    let currentHash;
+    const markCurrent = (destination) => {
+      const section = destination?.closest('main > section[id]');
+      const hash = section && (sectionLinks[section.id] || `#${section.id}`);
+      if (hash === currentHash) return;
+      currentHash = hash;
+      menuLinks.forEach((link) => {
+        if (link.hash === hash) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+    const focusDestination = (destination) => {
+      if (!destination.hasAttribute('tabindex') && destination.tabIndex < 0) {
+        destination.setAttribute('tabindex', '-1');
+        destination.addEventListener('blur', () => {
+          if (destination.getAttribute('tabindex') === '-1') destination.removeAttribute('tabindex');
+        }, { once: true });
+      }
+      destination.focus({ preventScroll: true });
+    };
     const setOpen = (open) => {
       links.classList.toggle('open', open);
       button.setAttribute('aria-expanded', String(open));
@@ -21,8 +49,23 @@
     button.addEventListener('click', () => {
       setOpen(mobile.matches && !links.classList.contains('open'));
     });
-    links.addEventListener('click', (event) => {
-      if (event.target.closest('a[href]')) close();
+    // Long page jumps should not keep visitors waiting through a full-page scroll.
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link || event.defaultPrevented || event.button !== 0 || event.ctrlKey ||
+          event.metaKey || event.shiftKey || event.altKey || link.hasAttribute('download') ||
+          (link.target && link.target !== '_self')) return;
+      let destination;
+      try { destination = document.getElementById(decodeURIComponent(link.hash.slice(1))); }
+      catch (_) { return; }
+      if (!destination) return;
+      event.preventDefault();
+      close();
+      if (window.location.hash !== link.hash) window.history.pushState(null, '', link.hash);
+      const shortJump = Math.abs(destination.getBoundingClientRect().top) < window.innerHeight * 1.5;
+      destination.scrollIntoView({ behavior: shortJump && !reduced.matches ? 'smooth' : 'instant', block: 'start' });
+      focusDestination(destination);
+      markCurrent(destination);
     });
     document.addEventListener('click', (event) => {
       if (!nav.contains(event.target)) close();
@@ -32,9 +75,12 @@
         close(links.contains(document.activeElement) || document.activeElement === button);
       }
     });
-    window.addEventListener('resize', () => {
-      if (!mobile.matches) close();
+    nav.addEventListener('focusout', (event) => {
+      if (!nav.contains(event.relatedTarget)) close();
     });
+    const onBreakpointChange = () => { if (!mobile.matches) close(); };
+    if (mobile.addEventListener) mobile.addEventListener('change', onBreakpointChange);
+    else mobile.addListener(onBreakpointChange);
     window.addEventListener('hashchange', () => {
       let id;
       try {
@@ -44,20 +90,46 @@
       }
       const destination = document.getElementById(id);
       if (!destination) return;
-      if (!destination.hasAttribute('tabindex') && destination.tabIndex < 0) {
-        destination.setAttribute('tabindex', '-1');
-        destination.addEventListener('blur', () => {
-          if (destination.getAttribute('tabindex') === '-1') {
-            destination.removeAttribute('tabindex');
-          }
-        }, { once: true });
-      }
-      destination.focus({ preventScroll: true });
+      close();
+      focusDestination(destination);
+      markCurrent(destination);
     });
 
     button.setAttribute('aria-controls', links.id);
     setOpen(false);
     nav.classList.add('js-nav');
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(([entry]) => {
+        const height = entry.borderBoxSize?.[0]?.blockSize || nav.getBoundingClientRect().height;
+        document.documentElement.style.setProperty('--nav-height', `${height}px`);
+      }).observe(nav);
+    }
+    const updateLocation = () => {
+      const line = Math.max(window.innerHeight * 0.2, nav.getBoundingClientRect().bottom + 16);
+      let active;
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+        active = sections[sections.length - 1];
+      } else {
+        for (let index = sections.length - 1; index >= 0; index--) {
+          if (sections[index].getBoundingClientRect().top <= line) {
+            active = sections[index];
+            break;
+          }
+        }
+      }
+      markCurrent(active || sections[0]);
+    };
+    let locationFrame = null;
+    const scheduleLocation = () => {
+      if (locationFrame !== null) return;
+      locationFrame = window.requestAnimationFrame(() => {
+        locationFrame = null;
+        updateLocation();
+      });
+    };
+    window.addEventListener('scroll', scheduleLocation, { passive: true });
+    window.addEventListener('resize', scheduleLocation);
+    updateLocation();
   } catch (error) {
     console.warn('Preview navigation could not initialize.', error);
   }
@@ -264,6 +336,7 @@
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-modal', 'true');
     panel.setAttribute('aria-labelledby', title.id);
+    panel.setAttribute('aria-describedby', caption.id);
     panel.tabIndex = -1;
     viewport.tabIndex = 0;
     percentage.setAttribute('aria-live', 'polite');
@@ -348,8 +421,8 @@
       const version = ++loadVersion;
       ready = false;
       viewport.setAttribute('aria-busy', 'true');
-      title.textContent = source.alt || 'Evidence screenshot';
-      caption.textContent = getCaption(source);
+      title.textContent = getCaption(source);
+      caption.textContent = source.alt || getCaption(source);
       image.alt = source.alt || 'Evidence screenshot';
       image.style.removeProperty('width');
       image.style.removeProperty('height');
