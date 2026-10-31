@@ -1,86 +1,66 @@
 # Yousef Emara Website
 
-This repository preserves the existing website at https://yousefemara.com/.
-The owner approved the production HTML captured on October 31, 2026 as the initial
-GitHub baseline. Website content matches that snapshot byte for byte. Automatic
-production deployment remains disabled pending configuration and preview verification
-and a separate release approval.
+This owner-approved portfolio is a buildless static website. No npm dependencies
+or framework are required. Open public/index.html directly for local review and
+keep its neighboring styles, scripts, fonts, and assets together.
 
 ## Source
 
-- `public/index.html` contains the complete static website, including embedded CSS,
-  JavaScript, images, logos, and fonts. No npm dependencies or build are required.
-- `vercel.json` serves only `public/`. Repository documentation is outside the
-  served directory. Git-triggered deployments are deliberately disabled for setup.
-- `AGENTS.md` records the editing and release workflow for future Codex work.
+- public/index.html: content, case studies, original embedded campaign evidence.
+- public/styles.css: brand tokens, layouts, components, responsive rules.
+- public/fonts.css: original embedded fonts; no external font requests.
+- public/script.js: navigation, optional motion, logo controls, screenshot viewer.
+- public/assets/: local logos; provenance in SOURCES.md.
+- public/ICONS-LICENSE.txt: notices for inlined interface icons.
+- vercel.json: serves only public/ with no build step.
 
-The HTML is preserved byte for byte from the production response. The original
-local version contains newer wording and is kept separately outside this repository
-for review as a subsequent change. Backups, comparison reports, `.env` files, and
-local Vercel credentials are not included in this repository.
+The approved update includes Hive Analytics experience, improved accessibility
+and case navigation, screenshot inspection, consistent Nahdi tools including
+Channable/Supermetrics, and multi-million SAR monthly advertising-budget wording.
+Original case evidence remains unchanged. The initial production baseline remains
+in Git history at 66682137eaed33047b82d9d60be34af4756a081c.
 
-Open `public/index.html` in a browser for a local review. Keep embedded assets intact.
+Backups, local preview notes, tests, the resume, credentials, and .env files must
+remain outside public/ and are not part of the website source.
 
-## Intended Connections
+## Existing Hosting Target
 
-| Setting | Intended value |
+| Setting | Value |
 | --- | --- |
-| GitHub repository | `yousefomaragg-blip/joo` |
-| Existing Vercel team | `joon`, slug `joondasf` |
-| Existing Vercel project | `yousef-emara` |
-| Vercel project ID | `prj_Ee0trXYCdYVEfhO24jbCHcHixnnm` |
-| Future production branch | `main` |
+| GitHub repository | yousefomaragg-blip/joo |
+| Vercel team | joondasf (display name joon) |
+| Vercel project | yousef-emara |
+| Project ID | prj_Ee0trXYCdYVEfhO24jbCHcHixnnm |
+| Production branch | main |
 | Root directory | Repository root |
-| Framework | Other (`null` in `vercel.json`) |
+| Framework | Other / null |
 | Build command | Empty |
-| Output directory | `public` |
+| Output directory | public |
 
-Use the existing project. Do not create a replacement project or move the domain.
-The separate projects `yousefomara` and `yousef-emara-email-marketing` are not targets.
+Use the existing project; do not create a replacement or move the domain.
+The email/retention website is separate and is not a release target.
 
-## Setup After Baseline Approval
+## Publishing
 
-1. Recheck the live version and repository before any push. If production or GitHub
-   has changed, reconcile it before proceeding.
-2. Commit and push the approved production baseline to `main` while the Vercel
-   project is still disconnected and `git.deploymentEnabled` remains `false`.
-3. Connect only the verified existing project to `yousefomaragg-blip/joo`; select
-   `main` as the production branch. Git deployments remain disabled by the config.
-4. On a separate setup branch, remove the `git.deploymentEnabled: false` guard
-   (or the entire `git` object) and push a pull request. This permits a preview
-   for that setup branch while `main` still contains the disabled setting.
-5. Verify the actual preview, source commit, domain routing, and screenshots on
-   desktop and mobile. Do not merge until the owner approves the production release.
-6. Merge the approved setup PR. This enables native Git deployment on `main` and
-   publishes the verified baseline through the existing project. Check the live
-   site afterward. Review the pending local wording changes in a separate PR.
+The owner explicitly approved publishing this design on October 31, 2026.
+That approval covers this release, not unrestricted future production changes.
 
-Connecting a repository can trigger deployment activity. The disabled config is an
-additional guard, not authorization to connect or deploy before baseline approval.
-Confirm the Git setting's behavior in the existing project during the setup.
+git.deploymentEnabled remains false: pushing alone does not deploy the site.
+An authorized manual release must verify the team, project, commit, complete asset
+set, staged build, and domain mapping. Do not enable automatic deployments merely
+to work around missing access. Check the actual deployment state before claiming
+the website is live; a commit or this README is not evidence of deployment.
 
-## Future Changes
+For future changes, develop on a feature branch, review the change locally or in
+an authorized preview, and publish only the approved commit. Before release,
+retain the current production deployment for rollback. Never include secrets or
+local backups. Enabling automatic Git production deployment is a separate
+configuration decision requiring explicit owner approval.
 
-1. Codex edits a feature branch and opens a pull request.
-2. Once Git deployments are enabled, Vercel automatically builds a preview for
-   branch pushes and attaches the preview to the PR.
-3. Review the preview and approve the exact proposed change.
-4. Codex merges only after your explicit approval; `main` then triggers production.
-5. Verify the production URL and retain the previous deployment for rollback.
+## Validation
 
-Vercel does not automatically wait for a chat approval before publishing `main`.
-Approval is enforced by withholding the merge; direct pushes to `main` must be avoided.
-GitHub branch rules can reinforce PR-only changes. Required review rules must suit
-the account: GitHub does not let a PR author approve their own PR, so a solo owner
-cannot use their own review as the only required approval. The exact available rules
-and checks still need inspection and configuration after baseline approval.
-
-No separate GitHub Actions deployment workflow or Vercel API token is needed for
-native Git integration. Codex needs GitHub repository access, and Vercel's GitHub
-installation needs access to this repository.
-
-## References
-
-- https://vercel.com/docs/git/vercel-for-github
-- https://vercel.com/docs/builds/configure-a-build
-- https://vercel.com/docs/project-configuration/git-configuration
+Checked the approved local design in Brave across 1440, 1024, 768, 390 and 320px,
+with keyboard controls, reduced motion, JavaScript disabled, enlarged text, image
+decoding, source preservation, and fragment navigation. Repeat affected checks
+after edits and verify published URLs/assets. Real mobile hardware and
+screen-reader review remain useful follow-up checks.
