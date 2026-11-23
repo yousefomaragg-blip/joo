@@ -40,3 +40,9 @@ https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/sliders-horizon
 Channable and Supermetrics images in the Nahdi list were also extracted unchanged
 from the existing Tools section. The generic Dashboards and Optimization labels
 have been removed from that list; the underlying responsibilities remain intact.
+
+The three PDFs in `certificates/` are original CXL course certificates supplied
+by the website owner on 2026-11-23. The matching PNG files are unedited raster
+previews rendered locally from those PDFs for the portfolio certificate cards.
+The CXL name, certificate design, and marks belong to CXL and are shown only to
+document the credentials awarded to Yousef Emara.

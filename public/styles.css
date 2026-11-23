@@ -216,6 +216,17 @@ section { padding: 80px 32px; }
 .platform-logo-frame { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .platform-logo-frame.brand-wide { width: 76px; }
 .platform-logo { width: 100%; height: 100%; object-fit: contain; }
+.certificates { background: white; border-top: 1px solid var(--line); }
+.certificate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.certificate-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); }
+.certificate-preview { display: block; aspect-ratio: 22 / 17; overflow: hidden; background: #65dce0; border-bottom: 1px solid var(--line); }
+.certificate-preview img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--anim-fast); }
+.certificate-body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 24px; }
+.certificate-issuer { margin-bottom: 12px; color: var(--accent); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.certificate-title { margin-bottom: 12px; font: 700 1.375rem/1.35 var(--serif); }
+.certificate-meta { margin-bottom: 20px; color: var(--ink-4); font-size: 0.875rem; }
+.certificate-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: auto; color: var(--accent); font-size: 0.875rem; font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.certificate-card:focus-within { border-color: var(--accent); }
 .clients-managed { background: white; border-top: 1px solid var(--line); }
 .client-pill { gap: 16px; min-height: 96px; }
 .client-logo-frame { width: 110px; height: 56px; display: flex; align-items: center; justify-content: center; }
@@ -340,6 +351,7 @@ body.lightbox-open { overflow: hidden; }
 .reveal, .section-reveal, .platform-pill { opacity: 1; }
 @media (hover: hover) and (pointer: fine) {
   .selected-card:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: 0 10px 28px rgba(13, 30, 17, 0.07); }
+  .certificate-card:hover .certificate-preview img { transform: scale(1.02); }
 }
 @media (max-width: 1100px) {
   .nav-links { gap: 16px; }
@@ -380,6 +392,7 @@ body.lightbox-open { overflow: hidden; }
   .nahdi-achievement-grid { gap: 20px; }
   .nahdi-achievement-metric { font-size: 2rem; }
   .services-grid, .selected-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .certificate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .services-grid > :last-child, .selected-grid > :last-child { grid-column: 1 / -1; }
   .selected-title { max-width: 620px; }
   .cs-body { grid-template-columns: 1fr; }
@@ -420,7 +433,7 @@ body.lightbox-open { overflow: hidden; }
   .nahdi-card { padding: 24px; }
   .experience-scope, .experience-details { grid-template-columns: 1fr; gap: 24px; }
   .experience-scope-value { font-size: 1.75rem; }
-  .services-grid, .selected-grid, .result-groups { grid-template-columns: 1fr; }
+  .services-grid, .selected-grid, .result-groups, .certificate-grid { grid-template-columns: 1fr; }
   .total-result-num { font-size: 2.5rem; }
   .cs-header, .cs-content, .cs-sidebar { padding: 24px 20px; }
   .cs-title { font-size: 1.5rem; }
@@ -471,7 +484,7 @@ body.lightbox-open { overflow: hidden; }
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
   .motion-ready .platform-marquee-track, .motion-ready .proof-marquee-track { width: auto; flex-wrap: wrap; padding: 0; }
   .motion-ready .platform-marquee-track > [aria-hidden='true'], .motion-ready .proof-marquee-track > [aria-hidden='true'] { display: none; }
-  .selected-card:hover, .image-lightbox-panel { transform: none; }
+  .selected-card:hover, .certificate-preview img, .image-lightbox-panel { transform: none; }
   .motion-controls { display: none; }
 }
 @media (prefers-reduced-transparency: reduce) { #nav { background: var(--paper); backdrop-filter: none; } }
@@ -480,5 +493,6 @@ body.lightbox-open { overflow: hidden; }
   #nav, .motion-controls, .image-lightbox, .hero-actions, .contact-actions { display: none !important; }
   body, section, .cs-header, .proof, .contact { color: black !important; background: white !important; }
   .platform-marquee-track, .proof-marquee-track { animation: none; flex-wrap: wrap; width: 100%; }
+  .certificate-card { break-inside: avoid; }
   [aria-hidden='true'] { display: none !important; }
 }

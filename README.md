@@ -10,7 +10,7 @@ keep its neighboring styles, scripts, fonts, and assets together.
 - public/styles.css: brand tokens, layouts, components, responsive rules.
 - public/fonts.css: original embedded fonts; no external font requests.
 - public/script.js: navigation, optional motion, logo controls, screenshot viewer.
-- public/assets/: local logos; provenance in SOURCES.md.
+- public/assets/: local logos and certificate files; provenance in SOURCES.md.
 - public/ICONS-LICENSE.txt: notices for inlined interface icons.
 - vercel.json: serves only public/ with no build step.
 
